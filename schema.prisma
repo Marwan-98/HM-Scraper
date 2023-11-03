@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id            Int        @id @default(autoincrement())
+  name          String
+  description   String?
+  parentId      Int?
+  parent        Category?  @relation("CategoryChildren", fields: [parentId], references: [id])
+  subcategories Category[] @relation("CategoryChildren")
+  createdAt     DateTime   @default(now())
+  products      Product[]
+}
+
+model Product {
+  id               Int         @id @default(autoincrement())
+  sku              String      @unique
+  slug             String      @unique
+  name             String
+  stockStatus      Boolean
+  description      String?
+  images           Image[]
+  regular_price    Decimal
+  discounted_price Decimal?
+  currency         String
+  categoryId       Int
+  createdAt        DateTime    @default(now())
+  category         Category    @relation(fields: [categoryId], references: [id])
+  attributes       Attribute[]
+  details          Detail[]
+  productVariants  Product[]   @relation("ProductVariant")
+  variants         Product[]   @relation("ProductVariant")
+  parentId         Int?
+}
+
+model Image {
+  id         Int     @id @default(autoincrement())
+  fullscreen String
+  image      String
+  thumbnail  String
+  zoom       String
+  Product    Product @relation(fields: [productId], references: [id])
+  productId  Int
+}
+
+model Attribute {
+  id        Int              @id @default(autoincrement())
+  name      String
+  productId Int
+  createdAt DateTime         @default(now())
+  product   Product          @relation(fields: [productId], references: [id])
+  options   AttributeValue[]
+}
+
+model AttributeValue {
+  id          Int       @id @default(autoincrement())
+  name        String
+  value       String
+  attributeId Int
+  createdAt   DateTime  @default(now())
+  attribute   Attribute @relation(fields: [attributeId], references: [id])
+}
+
+model Detail {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  products  Product  @relation(fields: [productId], references: [id])
+  productId Int
+  value     String
+}
