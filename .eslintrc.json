@@ -1,0 +1,29 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": "standard-with-typescript",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "camelcase": "off",
+    "import/extensions": [
+      "off",
+      {
+        "js": "ignorePackages"
+      }
+    ],
+    "operator-linebreak": "off",
+    "no-console": "off",
+    "no-unused-vars": "warn",
+    "import/no-extraneous-dependencies": ["off", { "devDependencies": true }],
+    "no-restricted-syntax": "off",
+    "@typescript-eslint/semi": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/comma-dangle": "off",
+    "@typescript-eslint/no-misused-promises": "off"
+  }
+}
